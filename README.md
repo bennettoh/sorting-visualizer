@@ -9,7 +9,7 @@ To do
 ---
 - [x] Live version on gh-pages
 - [ ] Basic UI
-- [ ] Generate values
+- [x] Generate values
 - [ ] Bubble sort
 - [ ] Adjustable settings
 - [ ] Merge sort
