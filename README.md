@@ -14,6 +14,7 @@ To do
 - [ ] Adjustable settings
 - [ ] Merge sort
 - [ ] Quick sort
+- [ ] Better styling
 
 
 Try It
