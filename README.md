@@ -8,7 +8,7 @@ Created with *create-react-app*. See the [full create-react-app guide](https://g
 To do
 ---
 - [x] Live version on gh-pages
-- [ ] Basic UI
+- [x] Basic UI
 - [x] Generate values
 - [ ] Bubble sort
 - [ ] Adjustable settings
