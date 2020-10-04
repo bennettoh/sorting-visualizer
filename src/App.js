@@ -1,23 +1,34 @@
 import React from 'react';
-import { Button, FormControl, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 
+// components
+import { Button, FormControl, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import Bar from './components/Bar';
 
+// style
 import './App.css';
+
+// algorithms
+import bubbleSort from './algorithms/bubbleSort';
+import mergeSort from './algorithms/mergeSort';
 
 class App extends React.Component {
   state = {
     array: [],
-    algorithm: 'Bubble Sort'
+    arraySteps: [],
+    algorithm: 'Bubble Sort',
+    barCount: "8",
+    delay: 100,
   }
 
   handleStart = () => {
     if (this.state.algorithm === 'Bubble Sort') {
-      this.bubbleSort(0, this.state.array.length - 1);
+      let arrayNew = bubbleSort(this.state.array);
+
+      this.run(arrayNew);
     }
     if (this.state.algorithm === 'Merge Sort') {
       this.setState({
-        array: this.mergeSortRecursive(this.state.array),
+        array: mergeSort(this.state.array),
       });
     }
     if (this.state.algorithm === 'Quick Sort') {
@@ -25,132 +36,41 @@ class App extends React.Component {
     }
   }
 
-  recursionTest(counter) {
-    if (counter === 20) return;
-    this.recursionTest(++counter);
-
-    setTimeout(() => {
-      console.log(counter);
-    }, (20 - counter) * 100);
+  run(array) {
+    array.map((step, i) =>
+      setTimeout(() => {
+        this.setState({
+          array: step,
+        })
+      }, this.state.delay * i)
+    );
   }
 
-  bubbleSort(i, length) {
-    setTimeout(() => {
-      if (this.state.array[i % length] > this.state.array[(i % length) + 1]) this.handleSwap(i % length, i % length + 1);
-      if (i < length * length) this.bubbleSort(++i, length);
-    }, 10);
-  }
-
-  mergeSort(array, depth) {
-    if (array.length === 1) return array;
-
-    //pointers
-    let l, m, r;
-    l = 0;
-    m = array.length / 2;
-    r = array.length;
-
-    let arrayA = array.slice(l, m);
-    let arrayB = array.slice(m, r);
-    let newArray;
-
-    arrayA = this.mergeSort(array.slice(0, m), ++depth);
-    arrayB = this.mergeSort(array.slice(m), ++depth);
-
-    setTimeout(() => {
-      console.log('%ccurrent depth: ' + depth, "color: red");
-      console.log('input array ' + arrayA + arrayB);
-
-      newArray = this.merge(arrayA, arrayB);
-
-      this.setState({
-        array: newArray,
-      });
-
-      return newArray;
-    }, (10 - depth) * 100);
-  }
-
-  merge(arrayA, arrayB) {
-    let arrayNew = [];
-    let A = 0;
-    let B = 0;
-
-    while (arrayA.length > 0 && arrayB.length > 0) {
-      if (arrayA[A] < arrayB[B]) {
-        arrayNew.push(arrayA.shift());
-      } else {
-        arrayNew.push(arrayB.shift());
-      }
-    }
-    if (arrayA.length !== 0) arrayNew = arrayNew.concat(arrayA);
-    if (arrayB.length !== 0) arrayNew = arrayNew.concat(arrayB);
-
-    console.log('final array ' + arrayNew);
-
-
-    return arrayNew;
-  }
-
-  mergeSortRecursive(array) {
-    if (array.length === 1) return array;
-
-    let middle = array.length / 2;
-    let arrayA, arrayB, arrayNew = [];
-
-    // pointers
-    let A = 0;
-    let B = 0;
-
-    arrayA = this.mergeSortRecursive(array.slice(0, middle));
-    arrayB = this.mergeSortRecursive(array.slice(middle, array.length));
-
-    while (A < arrayA.length && B < arrayB.length) {
-
-      if (arrayA[A] > arrayB[B]) {
-        arrayNew = arrayNew.concat(arrayB[B++]);
-      } else {
-        arrayNew = arrayNew.concat(arrayA[A++]);
-      }
-    }
-
-    if (A < arrayA.length) arrayNew = arrayNew.concat(arrayA.slice(A));
-    if (B < arrayB.length) arrayNew = arrayNew.concat(arrayB.slice(B));
-
-    this.setState({
-      array: arrayNew,
-    })
-
-    return arrayNew;
-  }
-
-  handleSwap = (indexA, indexB) => {
-    this.setState({
-      array: swap(this.state.array, indexA, indexB),
-    })
-  }
-
-  handleChange = (event) => {
+  changeAlgorithm = (event) => {
     this.setState({
       algorithm: event.target.value,
     });
   };
 
-  generateBars = () => {
+  changeBarCount = (event) => {
+    this.setState({
+      barCount: event.target.value,
+    })
+    this.generateBars(event.target.value);
+  }
+
+  generateBars = (barCount) => {
     let barsTemp = [];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < barCount; i++) {
       barsTemp.push(Math.floor(Math.random() * 90) + 10)
     }
     this.setState({
       array: barsTemp,
     });
-    console.log('=== new bars ===');
-
-    console.log(barsTemp);
   }
 
   componentDidMount() {
-    this.generateBars();
+    this.generateBars(this.state.barCount);
   }
 
   render() {
@@ -159,10 +79,19 @@ class App extends React.Component {
     return (
       <div className="App">
         <FormControl>
-          <RadioGroup aria-label="gender" name="algorithms" value={this.state.algorithm} onChange={this.handleChange}>
+          <RadioGroup name="algorithms" value={this.state.algorithm} onChange={this.changeAlgorithm}>
             <FormControlLabel value="Bubble Sort" control={<Radio />} label="Bubble Sort" />
             <FormControlLabel value="Merge Sort" control={<Radio />} label="Merge Sort" />
             <FormControlLabel value="Quick Sort" control={<Radio />} label="Quick Sort" />
+          </RadioGroup>
+
+        </FormControl>
+
+        <FormControl>
+          <RadioGroup name="barcounts" value={this.state.barCount} onChange={this.changeBarCount}>
+            <FormControlLabel value="8" control={<Radio />} label="8" />
+            <FormControlLabel value="16" control={<Radio />} label="16" />
+            <FormControlLabel value="32" control={<Radio />} label="32" />
           </RadioGroup>
         </FormControl>
 
@@ -174,13 +103,6 @@ class App extends React.Component {
       </div>
     )
   }
-}
-
-function swap(array, indexA, indexB) {
-  let temp = array[indexA];
-  array[indexA] = array[indexB];
-  array[indexB] = temp;
-  return array;
 }
 
 export default App;
