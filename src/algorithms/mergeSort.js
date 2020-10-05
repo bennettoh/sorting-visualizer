@@ -2,14 +2,11 @@ function mergeSort(array, position, arraySteps) {
   if (array.length === 1) return array;
 
   let mid = array.length / 2;
-  let arrayNew;
 
   let arrayA = mergeSort(array.slice(0, mid), position, arraySteps);
   let arrayB = mergeSort(array.slice(mid), position + mid, arraySteps);
 
-  arrayNew = merge(arrayA, arrayB, position, arraySteps);
-
-  return arrayNew;
+  return merge(arrayA, arrayB, position, arraySteps);
 }
 
 const merge = (arrayA, arrayB, position, arraySteps) => {
