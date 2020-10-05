@@ -27,15 +27,17 @@ class App extends React.Component {
     }
     if (this.state.algorithm === 'Merge Sort') {
       let arraySteps = [];
+      arraySteps.push(this.state.array.slice());
 
-      this.setState({
-        array: mergeSort(this.state.array, 0, arraySteps),
+      mergeSort(this.state.array.slice(), 0, arraySteps).then(result => {
+        this.run(arraySteps);
       });
+
     }
     if (this.state.algorithm === 'Quick Sort') {
-      let array = [];
-      quickSort(array);
-      console.log(array);
+      let steps = [];
+      quickSort(this.state.array, steps, 8);
+      console.log(steps);
     }
   }
 
@@ -86,13 +88,13 @@ class App extends React.Component {
 
         <FormControl>
           <RadioGroup name="barcounts" value={this.state.barCount} onChange={e => this.generateBars(e.target.value)}>
-            <FormControlLabel value={8} control={<Radio />} label="8" />
-            <FormControlLabel value={16} control={<Radio />} label="16" />
-            <FormControlLabel value={32} control={<Radio />} label="32" />
+            <FormControlLabel value={8} control={<Radio />} label="8 items" />
+            <FormControlLabel value={16} control={<Radio />} label="16 items" />
+            <FormControlLabel value={32} control={<Radio />} label="32 items" />
           </RadioGroup>
         </FormControl>
 
-        <Button variant="contained" color="secondary" onClick={() => this.generateBars(16)}>Reset</Button>
+        <Button variant="contained" color="secondary" onClick={() => this.generateBars(this.state.barCount)}>Reset</Button>
         <Button variant="contained" color="secondary" onClick={() => this.handleStart()}>Start</Button>
         <div className="container">
           {barsDiv}

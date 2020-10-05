@@ -3,14 +3,14 @@ Sorting Visualizer (WIP)
 <!-- <img src="./src/logo.svg" width="60px" height="60px" /> -->
 
 
-Features
+To do / Features
 ---
 - [x] Live version on gh-pages
 - [x] Basic UI
 - [x] Generate values
-- [ ] Bubble sort
+- [x] Bubble sort
 - [ ] Adjustable settings
-- [ ] Merge sort
+- [x] Merge sort
 - [ ] Quick sort
 - [ ] Better styling
 
