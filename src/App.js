@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, FormControl, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
 import Bar from './components/Bar';
 
 // style
@@ -15,8 +15,8 @@ class App extends React.Component {
     array: [],
     arraySteps: [],
     algorithm: 'Bubble Sort',
-    barCount: 16,
-    delay: 100,
+    barCount: 8,
+    delay: 96,
   }
 
   handleStart = () => {
@@ -55,6 +55,12 @@ class App extends React.Component {
     });
   };
 
+  changeDelay = (event) => {
+    this.setState({
+      delay: parseInt(event.target.value),
+    });
+  };
+
   generateBars = (barCount) => {
     let barsTemp = [];
     for (let i = 0; i < barCount; i++) {
@@ -76,6 +82,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <FormControl>
+          <FormLabel>Algorithm</FormLabel>
           <RadioGroup name="algorithms" value={this.state.algorithm} onChange={this.changeAlgorithm}>
             <FormControlLabel value="Bubble Sort" control={<Radio />} label="Bubble Sort" />
             <FormControlLabel value="Merge Sort" control={<Radio />} label="Merge Sort" />
@@ -85,6 +92,7 @@ class App extends React.Component {
         </FormControl>
 
         <FormControl>
+          <FormLabel>Array size</FormLabel>
           <RadioGroup name="barcounts" value={this.state.barCount} onChange={e => this.generateBars(e.target.value)}>
             <FormControlLabel value={8} control={<Radio />} label="8 items" />
             <FormControlLabel value={16} control={<Radio />} label="16 items" />
@@ -92,8 +100,19 @@ class App extends React.Component {
           </RadioGroup>
         </FormControl>
 
-        <Button variant="contained" color="secondary" onClick={() => this.generateBars(this.state.barCount)}>Reset</Button>
-        <Button variant="contained" color="secondary" onClick={() => this.handleStart()}>Start</Button>
+        <FormControl>
+          <FormLabel>Speed</FormLabel>
+          <RadioGroup name="delay" value={this.state.delay} onChange={this.changeDelay}>
+            <FormControlLabel value={96} control={<Radio />} label="1x" />
+            <FormControlLabel value={48} control={<Radio />} label="2x" />
+            <FormControlLabel value={24} control={<Radio />} label="4x" />
+          </RadioGroup>
+        </FormControl>
+
+        <div>
+          <Button variant="contained" color="secondary" onClick={() => this.generateBars(this.state.barCount)}>Reset</Button>
+          <Button variant="contained" color="secondary" onClick={() => this.handleStart()}>Start</Button>
+        </div>
         <div className="container">
           {barsDiv}
         </div>
