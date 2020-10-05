@@ -21,18 +21,16 @@ class App extends React.Component {
 
   handleStart = () => {
     if (this.state.algorithm === 'Bubble Sort') {
-      let arrayNew = bubbleSort(this.state.array);
+      let arraySteps = bubbleSort(this.state.array);
 
-      this.run(arrayNew);
+      this.run(arraySteps);
     }
     if (this.state.algorithm === 'Merge Sort') {
       let arraySteps = [];
       arraySteps.push(this.state.array.slice());
 
-      mergeSort(this.state.array.slice(), 0, arraySteps).then(result => {
-        this.run(arraySteps);
-      });
-
+      mergeSort(this.state.array.slice(), 0, arraySteps);
+      this.run(arraySteps);
     }
     if (this.state.algorithm === 'Quick Sort') {
       let steps = [];

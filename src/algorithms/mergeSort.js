@@ -1,11 +1,11 @@
-async function mergeSort(array, position, arraySteps) {
+function mergeSort(array, position, arraySteps) {
   if (array.length === 1) return array;
 
   let mid = array.length / 2;
   let arrayNew;
 
-  let arrayA = await mergeSort(array.slice(0, mid), position, arraySteps);
-  let arrayB = await mergeSort(array.slice(mid), position + mid, arraySteps);
+  let arrayA = mergeSort(array.slice(0, mid), position, arraySteps);
+  let arrayB = mergeSort(array.slice(mid), position + mid, arraySteps);
 
   arrayNew = merge(arrayA, arrayB, position, arraySteps);
 
