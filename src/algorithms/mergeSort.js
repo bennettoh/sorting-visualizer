@@ -1,25 +1,17 @@
-const mergeSort = (array) => {
+const mergeSort = (array, position, arraySteps) => {
   if (array.length === 1) return array;
+  let mid = array.length / 2;
+  let arrayNew;
 
-  //pointers
-  let l, m, r;
-  l = 0;
-  m = array.length / 2;
-  r = array.length;
+  let arrayA = mergeSort(array.slice(0, mid), position, arraySteps);
+  let arrayB = mergeSort(array.slice(mid), mid, arraySteps);
 
-  let arrayA = array.slice(l, m);
-  let arrayB = array.slice(m, r);
-  let newArray;
+  arrayNew = merge(arrayA, arrayB, position, arraySteps);
 
-  arrayA = mergeSort(array.slice(0, m));
-  arrayB = mergeSort(array.slice(m));
-
-  newArray = merge(arrayA, arrayB);
-
-  return newArray;
+  return arrayNew;
 }
 
-const merge = (arrayA, arrayB) => {
+const merge = (arrayA, arrayB, position, arraySteps) => {
   let arrayNew = [];
   let A = 0;
   let B = 0;
