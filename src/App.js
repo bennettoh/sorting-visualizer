@@ -13,7 +13,7 @@ import quickSort from './algorithms/quickSort';
 class App extends React.Component {
   state = {
     array: [],
-    arraySteps: [],
+    timeouts: [],
     algorithm: 'Bubble Sort',
     barCount: 8,
     delay: 96,
@@ -40,28 +40,43 @@ class App extends React.Component {
   }
 
   run(array) {
-    array.map((step, i) =>
-      setTimeout(() => {
+    this.clearTimeouts();
+    let timeouts = [];
+
+    array.map((step, i) => {
+      let timeout = setTimeout(() => {
         this.setState({
           array: step,
         })
-      }, this.state.delay * i)
-    );
+      }, this.state.delay * i);
+      timeouts.push(timeout);
+    });
+
+    this.setState({
+      timeouts: timeouts,
+    });
   }
 
   changeAlgorithm = (event) => {
+    this.clearTimeouts();
     this.setState({
       algorithm: event.target.value,
     });
   };
 
   changeDelay = (event) => {
+    this.clearTimeouts();
     this.setState({
       delay: parseInt(event.target.value),
     });
   };
 
+  clearTimeouts = () => {
+    this.state.timeouts.forEach(timeout => clearTimeout(timeout));
+  }
+
   generateBars = (barCount) => {
+    this.clearTimeouts();
     let barsTemp = [];
     for (let i = 0; i < barCount; i++) {
       barsTemp.push(Math.floor(Math.random() * 90) + 10);
