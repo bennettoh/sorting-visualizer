@@ -1,3 +1,5 @@
+import { swap } from './helpers';
+
 const quickSort = (array) => {
   if (array.length < 2) return array;
 
@@ -50,13 +52,6 @@ function pickPivot(array) {
   let middleIndex = array.indexOf(middleValue);
 
   return middleIndex;
-}
-
-function swap(array, indexA, indexB) {
-  let temp = array[indexA];
-  array[indexA] = array[indexB];
-  array[indexB] = temp;
-  return array;
 }
 
 export default quickSort;

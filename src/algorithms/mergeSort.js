@@ -1,3 +1,5 @@
+import { insertStep } from './helpers';
+
 function mergeSort(array, position, arraySteps) {
   if (array.length === 1) return array;
 
@@ -28,12 +30,6 @@ const merge = (arrayA, arrayB, position, arraySteps) => {
   insertStep(arrayNew, position, arraySteps);
 
   return arrayNew;
-}
-
-const insertStep = (arrayNew, position, arraySteps) => {
-  let currentStep = arraySteps[arraySteps.length - 1].slice();
-  currentStep.splice(position, arrayNew.length, ...arrayNew);
-  arraySteps.push(currentStep);
 }
 
 export default mergeSort;

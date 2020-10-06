@@ -1,3 +1,5 @@
+import { swap } from './helpers';
+
 const bubbleSort = (array) => {
   let arraySteps = [];
   for (let i = 0; i < array.length - 1; i++) {
@@ -9,13 +11,6 @@ const bubbleSort = (array) => {
     }
   }
   return arraySteps;
-}
-
-function swap(array, indexA, indexB) {
-  let temp = array[indexA];
-  array[indexA] = array[indexB];
-  array[indexB] = temp;
-  return array;
 }
 
 export default bubbleSort;
