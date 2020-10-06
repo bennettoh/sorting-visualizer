@@ -1,8 +1,11 @@
-import { swap } from './helpers';
+import { swap, insertStep } from './helpers';
 
-const quickSort = (array) => {
-  if (array.length < 2) return array;
+const quickSort = (array, position, arraySteps) => {
+  if (array.length < 2) return;
+
+  // pick median of three numbers as pivot and sent it to back
   swap(array, pickPivot(array), array.length - 1);
+  insertStep(array, position, arraySteps);
 
   let pivot = array[array.length - 1];
   let A = 0;
@@ -12,19 +15,20 @@ const quickSort = (array) => {
   while (A < B) {
     while (array[A] < pivot) A++;
     while (array[B] >= pivot) B--;
-    if (A < B) swap(array, A, B);
+    if (A < B) {
+      swap(array, A, B);
+      insertStep(array, position, arraySteps);
+    }
   }
 
   // swap big value with pivot
   swap(array, A > B ? A : B, array.length - 1);
+  insertStep(array, position, arraySteps);
 
   // recurse on two halves
-  let firstHalf = quickSort(array.slice(0, A));
-  let secondHalf = quickSort(array.slice(A + 1));
-
-  // put halves together
-  array = firstHalf.concat(pivot, secondHalf);
-  return array;
+  quickSort(array.slice(0, A), position, arraySteps);
+  quickSort(array.slice(A + 1), position + A + 1, arraySteps);
+  return;
 }
 
 function pickPivot(array) {

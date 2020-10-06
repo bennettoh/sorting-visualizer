@@ -11,7 +11,7 @@ To do / Features
 - [x] Bubble sort
 - [x] Adjustable settings
 - [x] Merge sort
-- [ ] Quick sort
+- [x] Quick sort
 - [ ] Pause, play, step through
 - [ ] Better styling
 
