@@ -9,9 +9,10 @@ To do / Features
 - [x] Basic UI
 - [x] Generate values
 - [x] Bubble sort
-- [ ] Adjustable settings
+- [x] Adjustable settings
 - [x] Merge sort
 - [ ] Quick sort
+- [ ] Pause, play, step through
 - [ ] Better styling
 
 
