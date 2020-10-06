@@ -2,45 +2,29 @@ import { swap } from './helpers';
 
 const quickSort = (array) => {
   if (array.length < 2) return array;
+  swap(array, pickPivot(array), array.length - 1);
 
-  let arrayNew = array.slice();
-  console.log('%coriginal array: ' + arrayNew, "color:red;");
-  swap(arrayNew, pickPivot(arrayNew), arrayNew.length - 1);
-
-  let pivot = arrayNew[arrayNew.length - 1];
+  let pivot = array[array.length - 1];
   let A = 0;
-  let B = arrayNew.length - 1;
+  let B = array.length - 1;
 
-  console.log('pivot: ' + pivot);
-  console.log('new array: ' + arrayNew);
-
-
-  // swap small with big values in order
+  // swap small value from right with big value from left
   while (A < B) {
-    while (arrayNew[A] < pivot) A++;
-    ;
-    while (arrayNew[B] >= pivot) B--;
-    ;
-    console.log('large val on left: ' + arrayNew[A]);
-    console.log('small val on right: ' + arrayNew[B]);
-    // swap and move on
-    if (A < B) swap(arrayNew, A, B);
-    console.log('new array: ' + arrayNew);
+    while (array[A] < pivot) A++;
+    while (array[B] >= pivot) B--;
+    if (A < B) swap(array, A, B);
   }
 
   // swap big value with pivot
-  console.log(`final swap indices: ${A} vs ${B}`);
+  swap(array, A > B ? A : B, array.length - 1);
 
-  swap(arrayNew, A > B ? A : B, arrayNew.length - 1);
-  console.log('final swap result: ' + arrayNew);
-
-  // recursive
-  let firstHalf = quickSort(arrayNew.slice(0, A));
-  let secondHalf = quickSort(arrayNew.slice(A + 1));
+  // recurse on two halves
+  let firstHalf = quickSort(array.slice(0, A));
+  let secondHalf = quickSort(array.slice(A + 1));
 
   // put halves together
-  arrayNew = firstHalf.concat(pivot, secondHalf);
-  return arrayNew;
+  array = firstHalf.concat(pivot, secondHalf);
+  return array;
 }
 
 function pickPivot(array) {
