@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import Bar from './components/Bar';
+import Form from './components/Form';
 
 // style
 import './App.css';
@@ -20,29 +21,24 @@ class App extends React.Component {
     colorKey: [],
   }
 
+  ALGO_SET = {
+    'Bubble Sort': bubbleSort,
+    'Merge Sort': mergeSort,
+    'Quick Sort': quickSort,
+  }
+
+  componentDidMount() {
+    this.generateBars(this.state.barCount);
+  }
+
   handleStart = () => {
-    if (this.state.algorithm === 'Bubble Sort') {
-      let [steps, colorSteps] = bubbleSort(this.state.array, this.state.colorKey);
-      this.run(steps, colorSteps);
-    }
-    if (this.state.algorithm === 'Merge Sort') {
-      let steps = [];
-      let colorSteps = [];
-      steps.push(this.state.array.slice());
-      colorSteps.push(this.state.colorKey.slice());
+    let array = this.state.array.slice();
+    let steps = [this.state.array.slice()];
+    let colorSteps = [this.state.colorKey.slice()];
 
-      mergeSort(this.state.array, 0, steps, colorSteps);
-      this.run(steps, colorSteps);
-    }
-    if (this.state.algorithm === 'Quick Sort') {
-      let steps = [];
-      let colorSteps = [];
-      steps.push(this.state.array.slice());
-      colorSteps.push(this.state.colorKey.slice());
+    this.ALGO_SET[this.state.algorithm](array, 0, steps, colorSteps);
 
-      quickSort(this.state.array, 0, steps, colorSteps);
-      this.run(steps, colorSteps);
-    }
+    this.run(steps, colorSteps);
   }
 
   run(steps, colorSteps) {
@@ -66,6 +62,7 @@ class App extends React.Component {
 
   changeAlgorithm = (event) => {
     this.clearTimeouts();
+    this.clearColorKey();
     this.setState({
       algorithm: event.target.value,
     });
@@ -82,12 +79,16 @@ class App extends React.Component {
     this.state.timeouts.forEach(timeout => clearTimeout(timeout));
   }
 
+  clearColorKey = () => {
+    this.setState({ colorKey: new Array(this.state.barCount).fill(false) });
+  }
+
   generateBars = (barCount) => {
     this.clearTimeouts();
+    this.clearColorKey();
 
     barCount = parseInt(barCount);
     let barsTemp = [];
-    let colorKey = new Array(barCount).fill(false);
 
     for (let i = 0; i < barCount; i++) {
       barsTemp.push(Math.floor(Math.random() * 90) + 10);
@@ -96,12 +97,7 @@ class App extends React.Component {
     this.setState({
       array: barsTemp,
       barCount: barCount,
-      colorKey: colorKey,
     });
-  }
-
-  componentDidMount() {
-    this.generateBars(this.state.barCount);
   }
 
   render() {
@@ -113,37 +109,42 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <FormControl>
-          <FormLabel>Algorithm</FormLabel>
-          <RadioGroup name="algorithms" value={this.state.algorithm} onChange={this.changeAlgorithm}>
-            <FormControlLabel value="Bubble Sort" control={<Radio />} label="Bubble Sort" />
-            <FormControlLabel value="Merge Sort" control={<Radio />} label="Merge Sort" />
-            <FormControlLabel value="Quick Sort" control={<Radio />} label="Quick Sort" />
-          </RadioGroup>
+        <Form
+          formLabel="Algorithm"
+          values={['Bubble Sort', 'Merge Sort', 'Quick Sort']}
+          labels={['Bubble Sort', 'Merge Sort', 'Quick Sort']}
+          currentValue={this.state.algorithm}
+          onChange={this.changeAlgorithm}
+        />
 
-        </FormControl>
+        <Form
+          formLabel="Array size"
+          values={[8, 16, 32]}
+          labels={['8 items', '16 items', '32 items']}
+          currentValue={this.state.barCount}
+          onChange={e => this.generateBars(e.target.value)}
+        />
 
-        <FormControl>
-          <FormLabel>Array size</FormLabel>
-          <RadioGroup name="barcounts" value={this.state.barCount} onChange={e => this.generateBars(e.target.value)}>
-            <FormControlLabel value={8} control={<Radio />} label="8 items" />
-            <FormControlLabel value={16} control={<Radio />} label="16 items" />
-            <FormControlLabel value={32} control={<Radio />} label="32 items" />
-          </RadioGroup>
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Speed</FormLabel>
-          <RadioGroup name="delay" value={this.state.delay} onChange={this.changeDelay}>
-            <FormControlLabel value={128} control={<Radio />} label="1x" />
-            <FormControlLabel value={64} control={<Radio />} label="2x" />
-            <FormControlLabel value={32} control={<Radio />} label="4x" />
-          </RadioGroup>
-        </FormControl>
+        <Form
+          formLabel="Speed"
+          values={[128, 64, 32]}
+          labels={['1x', '2x', '4x']}
+          currentValue={this.state.delay}
+          onChange={this.changeDelay}
+        />
 
         <div>
-          <Button variant="contained" color="secondary" onClick={() => this.generateBars(this.state.barCount)}>Reset</Button>
-          <Button variant="contained" color="secondary" onClick={() => this.handleStart()}>Start</Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => this.generateBars(this.state.barCount)}
+          >Reset</Button>
+
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => this.handleStart()}
+          >Start</Button>
         </div>
         <div className="container">
           {barsDiv}

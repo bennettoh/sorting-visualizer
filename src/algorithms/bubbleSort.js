@@ -1,9 +1,7 @@
 import { swap } from './helpers';
 
-const bubbleSort = (array) => {
-  let arraySteps = [];
-  let colorSteps = [];
-  let barStatus = new Array(array.length).fill(false);
+const bubbleSort = (array, position, arraySteps, colorSteps) => {
+  let colorKey = colorSteps[colorSteps.length - 1].slice();
 
   for (let i = 0; i < array.length - 1; i++) {
     for (let j = 0; j < array.length - i - 1; j++) {
@@ -11,15 +9,17 @@ const bubbleSort = (array) => {
         array = swap(array, j, j + 1);
       }
       arraySteps.push(array.slice());
-      colorSteps.push(barStatus.slice());
+      colorSteps.push(colorKey.slice());
 
     }
-    barStatus[array.length - 1 - i] = true;
+    colorKey[array.length - 1 - i] = true;
+    arraySteps.push(array.slice());
+    colorSteps.push(colorKey.slice());
   }
 
   // Remaining bars become green
   colorSteps[colorSteps.length - 1] = new Array(array.length).fill(true);
-  return [arraySteps, colorSteps];
+  return;
 }
 
 export default bubbleSort;
