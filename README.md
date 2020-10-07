@@ -12,6 +12,7 @@ To do / Features
 - [x] Adjustable settings
 - [x] Merge sort
 - [x] Quick sort
+- [x] Color code sorted bars
 - [ ] Pause, play, step through
 - [ ] Better styling
 

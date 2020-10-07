@@ -1,10 +1,14 @@
 import React from 'react';
 import "./Bar.css"
 
-function Bar(props) {
-  let style = props.length;
+function Bar({ length, color }) {
+  let style = {
+    height: length,
+    backgroundColor: color ? "green" : "black",
+  }
+
   return (
-    <div className="bar" style={{ height: style }} ></div>
+    <div className="bar" style={style} ></div>
   )
 }
 

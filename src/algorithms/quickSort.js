@@ -1,11 +1,19 @@
 import { swap, insertStep } from './helpers';
 
-const quickSort = (array, position, arraySteps) => {
-  if (array.length < 2) return;
+const quickSort = (array, position, arraySteps, colorSteps) => {
+  if (array.length < 2) {
+    insertStep(array, position, arraySteps);
+
+    let colorKey = colorSteps[colorSteps.length - 1].slice();
+    colorKey[position] = true;
+    colorSteps.push(colorKey);
+    return;
+  }
 
   // pick median of three numbers as pivot and sent it to back
   swap(array, pickPivot(array), array.length - 1);
   insertStep(array, position, arraySteps);
+  colorSteps.push(colorSteps[colorSteps.length - 1].slice());
 
   let pivot = array[array.length - 1];
   let A = 0;
@@ -18,16 +26,23 @@ const quickSort = (array, position, arraySteps) => {
     if (A < B) {
       swap(array, A, B);
       insertStep(array, position, arraySteps);
+      colorSteps.push(colorSteps[colorSteps.length - 1].slice());
     }
   }
 
   // swap big value with pivot
-  swap(array, A > B ? A : B, array.length - 1);
+  let bigIndex = Math.max(A, B);
+
+  swap(array, bigIndex, array.length - 1);
   insertStep(array, position, arraySteps);
+  let colorKey = colorSteps[colorSteps.length - 1].slice();
+  colorKey[position + bigIndex] = true;
+  colorSteps.push(colorKey);
 
   // recurse on two halves
-  quickSort(array.slice(0, A), position, arraySteps);
-  quickSort(array.slice(A + 1), position + A + 1, arraySteps);
+  quickSort(array.slice(0, A), position, arraySteps, colorSteps);
+  quickSort(array.slice(A + 1), position + A + 1, arraySteps, colorSteps);
+
   return;
 }
 

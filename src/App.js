@@ -16,41 +16,44 @@ class App extends React.Component {
     timeouts: [],
     algorithm: 'Bubble Sort',
     barCount: 8,
-    delay: 96,
+    delay: 128,
+    colorKey: [],
   }
 
   handleStart = () => {
     if (this.state.algorithm === 'Bubble Sort') {
-      let steps = bubbleSort(this.state.array);
-      this.run(steps);
+      let [steps, colorSteps] = bubbleSort(this.state.array, this.state.colorKey);
+      this.run(steps, colorSteps);
     }
     if (this.state.algorithm === 'Merge Sort') {
       let steps = [];
-      steps.push(this.state.array);
-      mergeSort(this.state.array, 0, steps);
-      this.run(steps);
+      let colorSteps = [];
+      steps.push(this.state.array.slice());
+      colorSteps.push(this.state.colorKey.slice());
+
+      mergeSort(this.state.array, 0, steps, colorSteps);
+      this.run(steps, colorSteps);
     }
     if (this.state.algorithm === 'Quick Sort') {
       let steps = [];
+      let colorSteps = [];
       steps.push(this.state.array.slice());
+      colorSteps.push(this.state.colorKey.slice());
 
-      console.log(this.state.array);
-
-      quickSort(this.state.array, 0, steps);
-
-      console.log(steps);
-      this.run(steps);
+      quickSort(this.state.array, 0, steps, colorSteps);
+      this.run(steps, colorSteps);
     }
   }
 
-  run(array) {
+  run(steps, colorSteps) {
     this.clearTimeouts();
     let timeouts = [];
 
-    array.map((step, i) => {
+    steps.map((step, i) => {
       let timeout = setTimeout(() => {
         this.setState({
           array: step,
+          colorKey: colorSteps[i],
         })
       }, this.state.delay * i);
       timeouts.push(timeout);
@@ -81,13 +84,19 @@ class App extends React.Component {
 
   generateBars = (barCount) => {
     this.clearTimeouts();
+
+    barCount = parseInt(barCount);
     let barsTemp = [];
+    let colorKey = new Array(barCount).fill(false);
+
     for (let i = 0; i < barCount; i++) {
       barsTemp.push(Math.floor(Math.random() * 90) + 10);
     }
+
     this.setState({
       array: barsTemp,
-      barCount: parseInt(barCount),
+      barCount: barCount,
+      colorKey: colorKey,
     });
   }
 
@@ -96,7 +105,11 @@ class App extends React.Component {
   }
 
   render() {
-    let barsDiv = this.state.array.map((value, index) => <Bar key={index} length={value} />);
+    let barsDiv = this.state.array.map((value, index) => <Bar
+      key={index}
+      length={value}
+      color={this.state.colorKey[index]}
+    />);
 
     return (
       <div className="App">
@@ -122,9 +135,9 @@ class App extends React.Component {
         <FormControl>
           <FormLabel>Speed</FormLabel>
           <RadioGroup name="delay" value={this.state.delay} onChange={this.changeDelay}>
-            <FormControlLabel value={96} control={<Radio />} label="1x" />
-            <FormControlLabel value={48} control={<Radio />} label="2x" />
-            <FormControlLabel value={24} control={<Radio />} label="4x" />
+            <FormControlLabel value={128} control={<Radio />} label="1x" />
+            <FormControlLabel value={64} control={<Radio />} label="2x" />
+            <FormControlLabel value={32} control={<Radio />} label="4x" />
           </RadioGroup>
         </FormControl>
 
