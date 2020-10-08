@@ -4,7 +4,7 @@ import "./Bar.css"
 function Bar({ length, color }) {
   let style = {
     height: length,
-    backgroundColor: color ? "green" : "black",
+    backgroundColor: color ? "green" : "grey",
   }
 
   return (

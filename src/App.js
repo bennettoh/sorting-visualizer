@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, IconButton } from '@material-ui/core';
-import { PlayArrow, Pause, SkipPrevious, SkipNext } from '@material-ui/icons';
+import { IconButton } from '@material-ui/core';
+import { PlayArrow, Pause, SkipPrevious, SkipNext, RotateLeft } from '@material-ui/icons';
 import Bar from './components/Bar';
 import Form from './components/Form';
 
@@ -176,36 +176,14 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <Form
-          formLabel="Algorithm"
-          values={['Bubble Sort', 'Merge Sort', 'Quick Sort']}
-          labels={['Bubble Sort', 'Merge Sort', 'Quick Sort']}
-          currentValue={this.state.algorithm}
-          onChange={this.changeAlgorithm}
-        />
+        <section className="bars container card">
+          {barsDiv}
+        </section>
 
-        <Form
-          formLabel="Array size"
-          values={[10, 25, 50]}
-          labels={['10 items', '25 items', '50 items']}
-          currentValue={this.state.barCount}
-          onChange={e => this.generateBars(e.target.value)}
-        />
-
-        <Form
-          formLabel="Speed"
-          values={[128, 64, 32]}
-          labels={['1x', '2x', '4x']}
-          currentValue={this.state.delay}
-          onChange={this.changeDelay}
-        />
-
-        <div>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => this.generateBars(this.state.barCount)}
-          >Reset</Button>
+        <section className="container-small">
+          <IconButton onClick={() => this.generateBars(this.state.barCount)} >
+            <RotateLeft />
+          </IconButton>
           <IconButton onClick={this.stepBack} >
             <SkipPrevious />
           </IconButton>
@@ -213,10 +191,34 @@ class App extends React.Component {
           <IconButton onClick={this.stepForward} >
             <SkipNext />
           </IconButton>
-        </div>
-        <div className="container">
-          {barsDiv}
-        </div>
+          <IconButton />
+        </section>
+
+        <section className="controls container-small">
+          <Form
+            formLabel="Algorithm"
+            values={['Bubble Sort', 'Merge Sort', 'Quick Sort']}
+            labels={['Bubble Sort', 'Merge Sort', 'Quick Sort']}
+            currentValue={this.state.algorithm}
+            onChange={this.changeAlgorithm}
+          />
+
+          <Form
+            formLabel="Array size"
+            values={[10, 25, 50]}
+            labels={['10 items', '25 items', '50 items']}
+            currentValue={this.state.barCount}
+            onChange={e => this.generateBars(e.target.value)}
+          />
+
+          <Form
+            formLabel="Speed"
+            values={[128, 64, 32]}
+            labels={['1x', '2x', '4x']}
+            currentValue={this.state.delay}
+            onChange={this.changeDelay}
+          />
+        </section>
       </div>
     )
   }
