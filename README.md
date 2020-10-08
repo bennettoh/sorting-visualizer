@@ -1,6 +1,12 @@
-Sorting Visualizer (WIP)
+Sorting Visualizer
 ---
-<!-- <img src="./src/logo.svg" width="60px" height="60px" /> -->
+This is a web app built using React and is used to visualize classic sorting algorithms such as bubble sort, merge sort, and quick sort. It also takes advantage of [material-ui library](https://material-ui.com/).
+
+
+This app is deployed with GitHub Pages and can be accessed here: [bennettoh.github.io/sorting-visualizer](https://bennettoh.github.io/sorting-visualizer/)
+
+
+<img src="./public/screenshot_preview.jpg" />
 
 
 To do / Features
@@ -13,8 +19,9 @@ To do / Features
 - [x] Merge sort
 - [x] Quick sort
 - [x] Color code sorted bars
-- [ ] Pause, play, step through
-- [ ] Better styling
+- [x] Pause, play, step through
+- [x] Better styling
+- [ ] Indicate bars being compared
 
 
 Live demo
