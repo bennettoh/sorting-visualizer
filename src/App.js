@@ -85,7 +85,7 @@ class App extends React.Component {
   }
 
   stepForward = () => {
-    if (this.state.currentStep === this.state.arraySteps.length - 1) return;
+    if (this.state.currentStep === this.state.arraySteps.length) return;
     this.clearTimeouts();
 
     let currentStep = this.state.currentStep + 1;
