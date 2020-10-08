@@ -35,7 +35,7 @@ class App extends React.Component {
     this.generateBars(this.state.barCount);
   }
 
-  handleStart = () => {
+  generateSteps = () => {
     let array = this.state.array.slice();
     let steps = this.state.arraySteps.slice();
     let colorSteps = this.state.colorSteps.slice();
@@ -46,10 +46,12 @@ class App extends React.Component {
       arraySteps: steps,
       colorSteps: colorSteps,
     });
-    this.run(steps, colorSteps);
   }
 
-  run(steps, colorSteps) {
+  setTimeouts() {
+    let steps = this.state.arraySteps;
+    let colorSteps = this.state.colorSteps;
+
     this.clearTimeouts();
     let timeouts = [];
     let i = 0;
@@ -100,8 +102,8 @@ class App extends React.Component {
     this.setState({
       algorithm: event.target.value,
       currentStep: 0,
-      arraySteps: [this.state.arraySteps[this.state.arraySteps.length - 1]],
-    });
+      arraySteps: [this.state.arraySteps[this.state.currentStep === 0 ? 0 : this.state.currentStep - 1]],
+    }, () => this.generateSteps());
     this.clearTimeouts();
     this.clearColorKey();
   };
@@ -144,7 +146,7 @@ class App extends React.Component {
       arraySteps: [barsTemp],
       barCount: barCount,
       currentStep: 0,
-    });
+    }, () => this.generateSteps());
   }
 
   render() {
@@ -162,14 +164,9 @@ class App extends React.Component {
           <Pause />
         </IconButton>
       );
-    } else if (this.state.arraySteps.length > 2) {
-      playButton = (
-        <IconButton color="secondary" onClick={() => this.run(this.state.arraySteps, this.state.colorSteps)} >
-          <PlayArrow />
-        </IconButton>);
     } else {
       playButton = (
-        <IconButton color="secondary" onClick={() => this.handleStart()} >
+        <IconButton color="secondary" onClick={() => this.setTimeouts()} >
           <PlayArrow />
         </IconButton>);
     }
