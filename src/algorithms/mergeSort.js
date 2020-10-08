@@ -2,9 +2,9 @@ import { insertStep } from './helpers';
 
 function mergeSort(array, position, arraySteps, colorSteps) {
   if (array.length === 1) return array;
+  let mid = Math.floor(array.length / 2);
 
-  let mid = array.length / 2;
-
+  // Split and work recursively
   let arrayA = mergeSort(array.slice(0, mid), position, arraySteps, colorSteps);
   let arrayB = mergeSort(array.slice(mid), position + mid, arraySteps, colorSteps);
 
@@ -24,30 +24,28 @@ const merge = (arrayA, arrayB, position, arraySteps, colorSteps) => {
       arrayNew.push(arrayB.shift());
       insertStep(arrayNew, position, arraySteps);
     }
-
-    if (position === 0) {
-      let colorKey = colorSteps[colorSteps.length - 1].slice();
-      colorKey[arrayNew.length - 1] = true;
-      colorSteps.push(colorKey);
-    } else {
-      colorSteps.push(colorSteps[colorSteps.length - 1].slice());
-    }
+    updateColor(position, colorSteps, arrayNew.length - 1, [0], []);
   }
 
-  if (position === 0) {
-    let colorKey = colorSteps[colorSteps.length - 1].slice();
-    colorKey.fill(true, position + arrayNew.length, position + arrayNew.length + arrayA.length + arrayB.length);
-    colorSteps.push(colorKey);
-  } else {
-    colorSteps.push(colorSteps[colorSteps.length - 1].slice());
-  }
-
+  // concatenate remaining values
+  updateColor(position, colorSteps, arrayNew.length, arrayA, arrayB);
   if (arrayA.length !== 0) arrayNew = arrayNew.concat(arrayA);
   if (arrayB.length !== 0) arrayNew = arrayNew.concat(arrayB);
-
   insertStep(arrayNew, position, arraySteps);
 
   return arrayNew;
+}
+
+function updateColor(position, colorSteps, start, arrayA, arrayB) {
+  if (position === 0) {
+    // if sorted from the front, mark changed elements to be green
+    let colorKey = colorSteps[colorSteps.length - 1].slice();
+    colorKey.fill(true, start, start + arrayA.length + arrayB.length);
+    colorSteps.push(colorKey);
+  } else {
+    // or duplicate previous step
+    colorSteps.push(colorSteps[colorSteps.length - 1].slice());
+  }
 }
 
 export default mergeSort;
