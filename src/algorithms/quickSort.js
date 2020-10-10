@@ -5,7 +5,7 @@ const quickSort = (array, position, arraySteps, colorSteps) => {
     insertStep(array, position, arraySteps);
 
     let colorKey = colorSteps[colorSteps.length - 1].slice();
-    colorKey[position] = true;
+    colorKey[position] = 2;
     colorSteps.push(colorKey);
     return;
   }
@@ -36,7 +36,7 @@ const quickSort = (array, position, arraySteps, colorSteps) => {
   swap(array, bigIndex, array.length - 1);
   insertStep(array, position, arraySteps);
   let colorKey = colorSteps[colorSteps.length - 1].slice();
-  colorKey[position + bigIndex] = true;
+  colorKey[position + bigIndex] = 2;
   colorSteps.push(colorKey);
 
   // recurse on two halves

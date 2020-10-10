@@ -127,7 +127,7 @@ class App extends React.Component {
   }
 
   clearColorKey = () => {
-    let blankKey = new Array(this.state.barCount).fill(false);
+    let blankKey = new Array(this.state.barCount).fill(0);
     this.setState({
       colorKey: blankKey,
       colorSteps: [blankKey],
@@ -157,7 +157,7 @@ class App extends React.Component {
     let barsDiv = this.state.array.map((value, index) => <Bar
       key={index}
       length={value}
-      color={this.state.colorKey[index]}
+      colorKey={this.state.colorKey[index]}
     />);
     let playButton;
 
