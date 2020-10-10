@@ -22,6 +22,7 @@ To do / Features
 - [x] Pause, play, step through
 - [x] Better styling
 - [ ] Indicate bars being compared
+- [ ] Profile links
 
 
 Live demo
