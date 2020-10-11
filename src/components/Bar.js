@@ -1,10 +1,14 @@
 import React from 'react';
 import "./Bar.css"
 
-function Bar({ length, color }) {
+function Bar({ length, colorKey }) {
+  const COLOR_SET = ["grey", "orange", "green"];
+
+  let color = COLOR_SET[colorKey];
+
   let style = {
     height: length,
-    backgroundColor: color ? "green" : "grey",
+    backgroundColor: color,
   }
 
   return (

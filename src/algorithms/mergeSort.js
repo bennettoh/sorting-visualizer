@@ -40,7 +40,7 @@ function updateColor(position, colorSteps, start, arrayA, arrayB) {
   if (position === 0) {
     // if sorted from the front, mark changed elements to be green
     let colorKey = colorSteps[colorSteps.length - 1].slice();
-    colorKey.fill(true, start, start + arrayA.length + arrayB.length);
+    colorKey.fill(1, start, start + arrayA.length + arrayB.length);
     colorSteps.push(colorKey);
   } else {
     // or duplicate previous step
