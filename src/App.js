@@ -20,9 +20,9 @@ class App extends React.Component {
     colorSteps: [],
     currentStep: 0,
     timeouts: [],
-    algorithm: 'Bubble Sort',
+    algorithm: 'Merge Sort',
     barCount: 25,
-    delay: 64,
+    delay: 128,
   }
 
   ALGO_SET = {
