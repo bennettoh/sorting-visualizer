@@ -20,9 +20,9 @@ class App extends React.Component {
     colorSteps: [],
     currentStep: 0,
     timeouts: [],
-    algorithm: 'Merge Sort',
-    barCount: 25,
-    delay: 128,
+    algorithm: 'Bubble Sort',
+    barCount: 10,
+    delay: 200,
   }
 
   ALGO_SET = {
@@ -220,7 +220,7 @@ class App extends React.Component {
 
           <Form
             formLabel="Speed"
-            values={[128, 64, 32]}
+            values={[200, 100, 50]}
             labels={['1x', '2x', '4x']}
             currentValue={this.state.delay}
             onChange={this.changeDelay}
