@@ -127,7 +127,7 @@ class App extends React.Component {
   }
 
   clearColorKey = () => {
-    let blankKey = new Array(this.state.barCount).fill(0);
+    let blankKey = new Array(parseInt(this.state.barCount)).fill(0);
     this.setState({
       colorKey: blankKey,
       colorSteps: [blankKey],
