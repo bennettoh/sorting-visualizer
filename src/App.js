@@ -21,8 +21,8 @@ class App extends React.Component {
     currentStep: 0,
     timeouts: [],
     algorithm: 'Bubble Sort',
-    barCount: 25,
-    delay: 64,
+    barCount: 10,
+    delay: 200,
   }
 
   ALGO_SET = {
@@ -127,7 +127,7 @@ class App extends React.Component {
   }
 
   clearColorKey = () => {
-    let blankKey = new Array(this.state.barCount).fill(0);
+    let blankKey = new Array(parseInt(this.state.barCount)).fill(0);
     this.setState({
       colorKey: blankKey,
       colorSteps: [blankKey],
@@ -220,7 +220,7 @@ class App extends React.Component {
 
           <Form
             formLabel="Speed"
-            values={[128, 64, 32]}
+            values={[200, 100, 50]}
             labels={['1x', '2x', '4x']}
             currentValue={this.state.delay}
             onChange={this.changeDelay}
