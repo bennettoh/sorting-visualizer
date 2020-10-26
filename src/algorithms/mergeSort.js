@@ -8,7 +8,10 @@ function mergeSort(array, position, arraySteps, colorSteps) {
   let arrayA = mergeSort(array.slice(0, mid), position, arraySteps, colorSteps);
   let arrayB = mergeSort(array.slice(mid), position + mid, arraySteps, colorSteps);
 
-  return merge(arrayA, arrayB, position, arraySteps, colorSteps);
+  let arrayNew = merge(arrayA, arrayB, position, arraySteps, colorSteps);
+  arraySteps.push(arraySteps[arraySteps.length - 1].slice());
+  colorSteps.push(colorSteps[colorSteps.length - 1].fill(arrayNew.length === arraySteps[0].length ? 2 : 0));
+  return arrayNew;
 }
 
 const merge = (arrayA, arrayB, position, arraySteps, colorSteps) => {
@@ -24,28 +27,32 @@ const merge = (arrayA, arrayB, position, arraySteps, colorSteps) => {
       arrayNew.push(arrayB.shift());
       insertStep(arrayNew, position, arraySteps);
     }
-    updateColor(position, colorSteps, arrayNew.length - 1, [0], []);
+    updateColor(position, colorSteps, arrayNew.length - 1, [], []);
   }
 
   // concatenate remaining values
-  updateColor(position, colorSteps, arrayNew.length, arrayA, arrayB);
-  if (arrayA.length !== 0) arrayNew = arrayNew.concat(arrayA);
-  if (arrayB.length !== 0) arrayNew = arrayNew.concat(arrayB);
-  insertStep(arrayNew, position, arraySteps);
+
+  if (arrayA.length !== 0 || arrayB.length !== 0) {
+    updateColor(position, colorSteps, arrayNew.length, arrayA, arrayB);
+    arrayNew = arrayNew.concat(arrayA);
+    arrayNew = arrayNew.concat(arrayB)
+    insertStep(arrayNew, position, arraySteps);
+  }
 
   return arrayNew;
 }
 
 function updateColor(position, colorSteps, start, arrayA, arrayB) {
-  if (position === 0) {
-    // if sorted from the front, mark changed elements to be green
-    let colorKey = colorSteps[colorSteps.length - 1].slice();
-    colorKey.fill(true, start, start + arrayA.length + arrayB.length);
-    colorSteps.push(colorKey);
+  let colorKey = colorSteps[colorSteps.length - 1].slice();
+  let end = position + start + arrayA.length + arrayB.length;
+  start = start + position;
+
+  if (end === start) {
+    colorKey.fill(1, start, end + 1);
   } else {
-    // or duplicate previous step
-    colorSteps.push(colorSteps[colorSteps.length - 1].slice());
+    colorKey.fill(1, start, end);
   }
+  colorSteps.push(colorKey);
 }
 
 export default mergeSort;

@@ -21,8 +21,7 @@ To do / Features
 - [x] Color code sorted bars
 - [x] Pause, play, step through
 - [x] Better styling
-- [ ] Indicate bars being compared
-- [ ] Profile links
+- [x] Indicate bars being compared
 
 
 Live demo

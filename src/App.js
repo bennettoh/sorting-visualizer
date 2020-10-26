@@ -21,8 +21,8 @@ class App extends React.Component {
     currentStep: 0,
     timeouts: [],
     algorithm: 'Bubble Sort',
-    barCount: 25,
-    delay: 64,
+    barCount: 10,
+    delay: 200,
   }
 
   ALGO_SET = {
@@ -32,7 +32,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.generateBars(this.state.barCount);
+    this.generateBars();
   }
 
   generateSteps = () => {
@@ -87,7 +87,7 @@ class App extends React.Component {
   }
 
   stepForward = () => {
-    if (this.state.currentStep === this.state.arraySteps.length) return;
+    if (this.state.currentStep >= this.state.arraySteps.length - 1) return;
     this.clearTimeouts();
 
     let currentStep = this.state.currentStep + 1;
@@ -108,6 +108,10 @@ class App extends React.Component {
     this.clearColorKey();
   };
 
+  changeBarCount = (barCount) => {
+    this.setState({ barCount: barCount }, () => this.generateBars());
+  }
+
   changeDelay = (event) => {
     this.clearTimeouts();
     this.setState({
@@ -123,18 +127,18 @@ class App extends React.Component {
   }
 
   clearColorKey = () => {
-    let blankKey = new Array(this.state.barCount).fill(false);
+    let blankKey = new Array(parseInt(this.state.barCount)).fill(0);
     this.setState({
       colorKey: blankKey,
       colorSteps: [blankKey],
     });
   }
 
-  generateBars = (barCount) => {
+  generateBars = () => {
     this.clearTimeouts();
     this.clearColorKey();
 
-    barCount = parseInt(barCount);
+    let barCount = parseInt(this.state.barCount);
     let barsTemp = [];
 
     for (let i = 0; i < barCount; i++) {
@@ -153,17 +157,23 @@ class App extends React.Component {
     let barsDiv = this.state.array.map((value, index) => <Bar
       key={index}
       length={value}
-      color={this.state.colorKey[index]}
+      colorKey={this.state.colorKey[index]}
     />);
     let playButton;
 
     // Set player controls
-    if (this.state.timeouts.length !== 0 && this.state.currentStep !== this.state.arraySteps.length - 1) {
+    if (this.state.timeouts.length !== 0 && this.state.currentStep !== this.state.arraySteps.length) {
       playButton = (
         <IconButton onClick={() => this.clearTimeouts()} >
           <Pause />
         </IconButton>
       );
+    } else if (this.state.currentStep === this.state.arraySteps.length) {
+      playButton = (
+        <IconButton color="secondary" onClick={() => this.generateBars()} >
+          <RotateLeft />
+        </IconButton>
+      )
     } else {
       playButton = (
         <IconButton color="secondary" onClick={() => this.setTimeouts()} >
@@ -178,7 +188,7 @@ class App extends React.Component {
         </section>
 
         <section className="container-small">
-          <IconButton onClick={() => this.generateBars(this.state.barCount)} >
+          <IconButton onClick={() => this.generateBars()} >
             <RotateLeft />
           </IconButton>
           <IconButton onClick={this.stepBack} >
@@ -205,12 +215,12 @@ class App extends React.Component {
             values={[10, 25, 50]}
             labels={['10 items', '25 items', '50 items']}
             currentValue={this.state.barCount}
-            onChange={e => this.generateBars(e.target.value)}
+            onChange={e => this.changeBarCount(e.target.value)}
           />
 
           <Form
             formLabel="Speed"
-            values={[128, 64, 32]}
+            values={[200, 100, 50]}
             labels={['1x', '2x', '4x']}
             currentValue={this.state.delay}
             onChange={this.changeDelay}
